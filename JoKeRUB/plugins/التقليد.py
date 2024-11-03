@@ -23,17 +23,8 @@ from . import (
 plugin_category = "fun"
 
 
-@l313l.ar_cmd(
-    pattern="تقليد$",
-    command=("تقليد", plugin_category),
-    info={
-        "header": "To repeat messages sent by the user.",
-        "description": "Reply to user with this cmd so from then his every text and sticker messages will be repeated back to him.",
-        "usage": "{tr}addecho <reply>",
-    },
-)
+@l313l.on(admin_cmd(pattern='تقليد'))
 async def echo(event):
-    "To echo the user messages"
     if event.reply_to_msg_id is None:
         return await edit_delete(event, "⌁︙يرجى الرد على الشخص الذي تـريد ازعاجه ،")
     catevent = await edit_or_reply(event, "⌁︙يتم تفعيل هذا الامر انتظر قليلا ")
