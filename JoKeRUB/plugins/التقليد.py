@@ -33,11 +33,34 @@ plugin_category = "fun"
     },
 )
 async def echo(event):
-    #"To echo the user messages"
-   # if event.reply_to_msg_id is None:
-    #    return await edit_delete(event, "⌁︙يرجى الرد على الشخص الذي تـريد ازعاجه ،")
-    await edit_or_reply(event, "⌁︙تم ازالة امر التقليد في السورس المجاني ❌")
-    
+    "To echo the user messages"
+    if event.reply_to_msg_id is None:
+        return await edit_delete(event, "⌁︙يرجى الرد على الشخص الذي تـريد ازعاجه ،")
+    catevent = await edit_or_reply(event, "⌁︙يتم تفعيل هذا الامر انتظر قليلا ")
+    user, rank = await get_user_from_event(event, catevent, nogroup=True)
+    if not user:
+        return
+    if user.id in [705475246, 1374312239]:
+        return await edit_delete(event, "**᯽︙ لا يمڪنني تقليد مطـوري لك فاشل **")
+    reply_msg = await event.get_reply_message()
+    chat_id = event.chat_id
+    user_id = reply_msg.sender_id
+    if event.is_private:
+        chat_name = user.first_name
+        chat_type = "Personal"
+    else:
+        chat_name = event.chat.title
+        chat_type = "Group"
+    user_name = user.first_name
+    user_username = user.username
+    if is_echo(chat_id, user_id):
+        return await edit_or_reply(event, "⌁︙تـم تفـعيل التـقليد على الشخص بنجاح ✅ ")
+    try:
+        addecho(chat_id, user_id, chat_name, user_name, user_username, chat_type)
+    except Exception as e:
+        await edit_delete(catevent, f"᯽︙ Error:\n`{str(e)}`")
+    else:
+        await edit_or_reply(catevent, "⌁︙تـم تفعـيل امـر التقليد علـى هذا الشـخص\n ⌁︙سـيتم تقليـد جميع رسائلـه هـنا")    
 
 @l313l.ar_cmd(
     pattern="مسح المقلدهم",
